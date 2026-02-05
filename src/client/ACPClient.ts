@@ -454,7 +454,10 @@ export class ACPClient {
    * @internal
    */
   async sendRequest<T>(method: string, params?: unknown): Promise<T> {
-    this.ensureConnected();
+    // Skip connection check for initialize method (called during connect())
+    if (method !== "initialize") {
+      this.ensureConnected();
+    }
 
     const id = this.nextRequestId++;
     const request: JsonRpcRequest = {
